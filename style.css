@@ -15,14 +15,14 @@ canvas {
     top: 16px;
     left: 16px;
     z-index: 99999;
-    color: gold;
+    color: cyan;
 }
 #timer {
     position: fixed;
     top: 16px;
     right: 16px;
     z-index: 99999;
-    color: white;
+    color: lightgreen;
 }
 
 #title {
@@ -32,5 +32,14 @@ canvas {
     z-index: 99999;
     font-size: 48px;
     color: cyan;
+}
+
+#sub-title {
+    position: fixed;
+    top: 8%;
+    right: 36%;
+    z-index: 99999;
+    font-size: 15px;
+    color: white;
 }
 

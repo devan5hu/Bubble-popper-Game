@@ -388,6 +388,12 @@ function level() {
     if (!scene.paused) {
         timer.textContent = time;
         time--;
+        if(time <= 9){
+            timer.style.color = 'red'; 
+            // console.log("Triggered");
+            timer.style.fontSize = '30px';
+            
+        }
         if (time < 0) {
             endgame();
         }
