@@ -1,6 +1,25 @@
+function changeValue(){
+    var ObjectSelector = document.getElementById('myList');
+    var value1 = ObjectSelector.options[ObjectSelector.selectedIndex].text;
+    localStorage.setItem("value" , value1);
+    console.log(value1);
+}
+
+function changeDifficulty(){
+    var ObjectSelector = document.getElementById('difficultyList');
+    var difficultyValue = ObjectSelector.options[ObjectSelector.selectedIndex].text;
+    localStorage.setItem("difficulty" , difficultyValue);
+    console.log(difficultyValue);
+}
+
 /* Shims, Polyfills, and Utils */
 window.requestAnimFrame = (function () {
-    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {
+    return window.requestAnimationFrame || 
+    window.webkitRequestAnimationFrame || 
+    window.mozRequestAnimationFrame || 
+    window.oRequestAnimationFrame || 
+    window.msRequestAnimationFrame || 
+    function (callback) {
         window.setTimeout(callback, 1000 / 60);
     };
 })();
@@ -61,7 +80,7 @@ Scene.prototype = {
             requestAnimFrame(this.animate.bind(this));
         }
         this.stats && (this.istats.begin());
-        this.animation(this); // removed draw function, it was stupid.
+        this.animation(this);
         this.stats && (this.istats.end());
     }
 };
@@ -150,12 +169,10 @@ Emitter.prototype = {
         return ret;
     }
 };
-
-// var broken_heart = new Array();
-// broken_heart[1] = new Image();
-// broken_heart[2] = new Image();
-// broken_heart[1].src = './heartredbroken.svg';
-// broken_heart[2].src = './heartyellowbroken.svg';
+// console.log(localStorage.getItem("value"));
+var value = localStorage.getItem("value");
+var difficultyValue = localStorage.getItem("difficulty");
+console.log("DIFFICULTY " + difficultyValue);
 var canvas = document.getElementById('canvas'),
     len = document.getElementById('len'),
     height = canvas.height = document.body.offsetHeight,
@@ -181,7 +198,7 @@ var canvas = document.getElementById('canvas'),
         name: 'Bubble',
         hits: 100,
         color: '#3d6aa3',
-        img: i_bubble,
+        img: i_bubble, // blue
         minvalue: 10,
         maxvalue: 40,
         rarity: 1,
@@ -190,7 +207,7 @@ var canvas = document.getElementById('canvas'),
         name: 'Power Bubble',
         hits: 110,
         color: '#3d68ff',
-        img: i_bubble_power, 
+        img: i_bubble_power,  // red
         minvalue: 20,
         maxvalue: 70,
         rarity: .35,
@@ -199,7 +216,7 @@ var canvas = document.getElementById('canvas'),
         name: 'Bad Bubble',
         hits: 1,
         color: '#f00',
-        img: broken_heart[0], 
+        img: broken_heart[0], // broken red
         minvalue: -10,
         maxvalue: -20,
         rarity: 0.2,
@@ -208,7 +225,7 @@ var canvas = document.getElementById('canvas'),
         name: 'Bad Bubble 2',
         hits: 1,
         color: '#f00',
-        img: broken_heart[1], 
+        img: broken_heart[1], // broken yellow
         minvalue: -10,
         maxvalue: -20,
         rarity: 0.2,
@@ -217,23 +234,38 @@ var canvas = document.getElementById('canvas'),
         name: 'Golden Bubble',
         hits: 200,
         color: '#ff0',
-        img: i_bubble_gold, 
+        img: i_bubble_gold,  // good yellow
         minvalue: 50,
         maxvalue: 200,
         rarity: 0.1,
         time: 10
     }
 
-    ],
+    ]
     score = 0,
     scoreboard = document.getElementById('score'),
     timer = document.getElementById('timer');
-i_bubble.src = './heartblue.svg';
-i_bubble_power.src = './heartred.svg';
-broken_heart[0].src = 'heartredbroken.svg'; 
-broken_heart[1].src = './heartyellowbroken.svg'; 
-i_bubble_gold.src = './heartgolden.svg';
-i_bullet.src = 'https://i.imgur.com/C0sfHom.png';
+    if(value == "Hearts"){
+        i_bubble.src = './Hearts/heartblue.svg';
+        i_bubble_power.src = './Hearts/heartred.svg';
+        broken_heart[0].src = './Hearts/heartredbroken.svg'; 
+        broken_heart[1].src = './Hearts/heartyellowbroken.svg'; 
+        i_bubble_gold.src = './Hearts/heartgolden.svg';
+    }
+    else if(value == "Bubbles"){
+        i_bubble.src = 'https://i.imgur.com/hVSo95T.png';
+        i_bubble_power.src = 'https://i.imgur.com/CzqIcTI.png';
+        broken_heart[0].src = 'https://i.imgur.com/v317naC.png'; 
+        broken_heart[1].src = './Bubbles/heartyellowbroken.svg'; 
+        i_bubble_gold.src = 'https://i.imgur.com/NhnHk0h.png';
+    }
+    else if(value == "Birds"){
+        i_bubble.src = './Birds/bluebird.svg';
+        i_bubble_power.src = './Birds/redbird.svg';
+        broken_heart[0].src = './Birds/purplebird.svg'; 
+        broken_heart[1].src = './Birds/heartyellowbroken.svg'; 
+        i_bubble_gold.src = './Birds/yellowbird.svg';
+    }
 
 function run(scene) {
     var ctx = scene.context;
@@ -262,8 +294,12 @@ window.onresize = function () {
 
 var gwind = 0;
 (function windEmitter() {
-    gwind = (Math.random() - 0.5) / 50;
-    setTimeout(windEmitter, 1000);
+    gwind = (difficultyValue == "Easy" ? 
+    (Math.random() - 0.5) / 50 : 
+    difficultyValue == "Medium" ? 
+    (Math.random() - 0.5) / 10 : 
+    (Math.random() - 0.5) / 4 );
+    setTimeout(windEmitter, 200); // was 1000
 }());
 
 setInterval(function () {
@@ -282,7 +318,9 @@ setInterval(function () {
         hp: type.hits,
         time: type.time,
         img: type.img,
-        gravity: -0.001,
+        gravity: (difficultyValue == "Easy" ? 
+        -0.001 : difficultyValue == "Medium" ? 
+        -0.002 : -0.004), // was -0.001
         value: type.minvalue + (Math.random() * (type.maxvalue - type.minvalue)),
         wind: gwind,
         color: type.color,
@@ -304,7 +342,7 @@ setInterval(function () {
     });
     // console.log(type.img)
     // console.log(type.img.src)
-}, Math.random() * 1000 + 100);
+}, Math.random() * 1000 + 10);
 
 
 
@@ -382,17 +420,21 @@ function endgame() {
     alert('game over score: ' + (score | 0));
     scene.paused = true;
 }
+
 var time = 30;
+function Restartgame(){
+    document.location.reload();
+}
+
+const PauseButton = document.getElementById('pause');
 
 function level() {
-    if (!scene.paused) {
+    if (scene.paused == false) {
         timer.textContent = time;
         time--;
         if(time <= 9){
             timer.style.color = 'red'; 
-            // console.log("Triggered");
             timer.style.fontSize = '30px';
-            
         }
         if (time < 0) {
             endgame();
@@ -401,3 +443,6 @@ function level() {
     }
 }
 level();
+const RestartButton = document.getElementById("restart");
+RestartButton.addEventListener("click" , Restartgame)
+

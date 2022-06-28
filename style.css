@@ -43,3 +43,19 @@ canvas {
     color: white;
 }
 
+#pause{
+    position: fixed;
+    top: 16px;
+    left: 25.3%;
+    z-index: 99999;
+    color: black;
+}
+
+#restart{
+    position: fixed;
+    top: 16px;
+    left: 31%;
+    z-index: 99999;
+    color: black;
+}
+
