@@ -387,7 +387,7 @@ canvas.onclick = function (event) {
                         }
                         else if(collision_partner.name == "Bad Bubble"){
                             // time -= 10;
-                            score -= -10;
+                            score -= 10;
 
                         }
                         else if(collision_partner.name == "Golden Bubble"){
