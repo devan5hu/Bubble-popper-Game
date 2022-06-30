@@ -1,6 +1,6 @@
 var score = parseInt(localStorage.getItem("PausedScore") ), 
 // time = parseInt(localStorage.getItem("time")) != NaN ? parseInt(localStorage.getItem("time")) : 30;
-time = 30;
+time = 300;
 function changeValue(){
     var ObjectSelector = document.getElementById('myList');
     var value1 = ObjectSelector.options[ObjectSelector.selectedIndex].text;
@@ -174,7 +174,7 @@ var value = localStorage.getItem("value");
 var difficultyValue = localStorage.getItem("difficulty");
 var canvas = document.getElementById('canvas'),
     len = document.getElementById('len'),
-    height = canvas.height  = document.body.offsetHeight,
+    height = canvas.height = document.body.offsetHeight,
     width = canvas.width = document.body.offsetWidth,
     scene = new Scene(),
     emitter = new Emitter(),
@@ -243,11 +243,11 @@ var canvas = document.getElementById('canvas'),
         i_bubble_gold.src = './Hearts/heartgolden.svg';
     }
     else if(value == "Bubbles"){
-        i_bubble.src = './Hearts/heartblue.svg';
-        i_bubble_power.src = './Hearts/heartred.svg';
-        broken_heart[0].src = './Hearts/heartredbroken.svg'; 
+        i_bubble.src = 'https://i.imgur.com/hVSo95T.png';
+        i_bubble_power.src = 'https://i.imgur.com/CzqIcTI.png';
+        broken_heart[0].src = 'https://i.imgur.com/v317naC.png'; 
         broken_heart[1].src = './Bubbles/heartyellowbroken.svg'; 
-        i_bubble_gold.src = './Hearts/heartgolden.svg';
+        i_bubble_gold.src = 'https://i.imgur.com/NhnHk0h.png';
     }
     else if(value == "Birds"){
         i_bubble.src = './Birds/bluebird.svg';
@@ -382,14 +382,14 @@ canvas.onclick = function (event) {
                             score += 10;
                         }
                         else if(collision_partner.name == "Power Bubble"){
-                            time += 1.25;
+                            time += 5;
                             score += 10;
                         }
                         else if(collision_partner.name == "Bad Bubble"){
-                            time -= 1.25;
+                            time -= 10;
                         }
                         else if(collision_partner.name == "Golden Bubble"){
-                            time += 2;
+                            time += 7;
                             score += 20;
                         }
                     }
