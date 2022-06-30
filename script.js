@@ -1,4 +1,4 @@
-var score = parseInt(localStorage.getItem("PausedScore") ), time = localStorage.getItem("time") != 0 ? parseInt(localStorage.getItem("time")) : 30;
+var score = parseInt(localStorage.getItem("PausedScore") ), time = parseInt(localStorage.getItem("time")) != 0 ? parseInt(localStorage.getItem("time")) : 30;
 function changeValue(){
     var ObjectSelector = document.getElementById('myList');
     var value1 = ObjectSelector.options[ObjectSelector.selectedIndex].text;
