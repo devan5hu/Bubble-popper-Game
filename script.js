@@ -174,7 +174,7 @@ var value = localStorage.getItem("value");
 var difficultyValue = localStorage.getItem("difficulty");
 var canvas = document.getElementById('canvas'),
     len = document.getElementById('len'),
-    height = canvas.height = document.body.offsetHeight,
+    height = canvas.height  = document.body.offsetHeight,
     width = canvas.width = document.body.offsetWidth,
     scene = new Scene(),
     emitter = new Emitter(),
@@ -243,11 +243,11 @@ var canvas = document.getElementById('canvas'),
         i_bubble_gold.src = './Hearts/heartgolden.svg';
     }
     else if(value == "Bubbles"){
-        i_bubble.src = 'https://i.imgur.com/hVSo95T.png';
-        i_bubble_power.src = 'https://i.imgur.com/CzqIcTI.png';
-        broken_heart[0].src = 'https://i.imgur.com/v317naC.png'; 
+        i_bubble.src = './Hearts/heartblue.svg';
+        i_bubble_power.src = './Hearts/heartred.svg';
+        broken_heart[0].src = './Hearts/heartredbroken.svg'; 
         broken_heart[1].src = './Bubbles/heartyellowbroken.svg'; 
-        i_bubble_gold.src = 'https://i.imgur.com/NhnHk0h.png';
+        i_bubble_gold.src = './Hearts/heartgolden.svg';
     }
     else if(value == "Birds"){
         i_bubble.src = './Birds/bluebird.svg';
