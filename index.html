@@ -9,11 +9,12 @@
 <body>
     <form class="my-form">
         <div class="container">
-          <h1>Poppers</h1>
+          <h1>Pop the bubble! 🎈</h1>
+          <h2> - By Dev</h2>
           <ul>
             <li>
-                <select id = "myList" onchange="changeValue()">  
-                    <option>-- Please choose an option --</option>
+                <select id = "myList" onchange="changeValue()" required>  
+                    <option>-- Choose your object --</option>
                     <option> Hearts </option>  
                     <option> Bubbles </option>  
                     <option> Birds </option>    
@@ -21,8 +22,8 @@
             </li>
           </ul>
         <ul>
-            <select id = "difficultyList" onchange="changeDifficulty()">  
-                <option>-- Please choose an option --</option>
+            <select id = "difficultyList" onchange="changeDifficulty()" required>  
+                <option>-- Choose your difficulty --</option>
                 <option> Easy </option>  
                 <option> Medium </option>  
                 <option> Hard </option>    
@@ -33,6 +34,12 @@
           </ul>
         </div>
       </form>
+      <ul>
+        <li id = "listed">Blue object +10 Score</li>
+        <li id = "listed">Yellow object +20 Score + 2 secs</li>
+        <li id = "listed">Fixed Red object (Not red bubble) +2.25 secs</li>
+        <li id = "listed">Any other object (broken red heart, purple bird, Red bubble) -2.25 secs</li>
+      </ul>
 <script  src="./script.js"></script>
 </body>
 </html>

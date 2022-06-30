@@ -59,3 +59,24 @@ canvas {
     color: black;
 }
 
+#resume{
+    position: fixed;
+    top: 16px;
+    left: 19%;
+    z-index: 99999;
+    color: black;
+}
+
+#listed{
+    color:#fff;
+    list-style:none;
+    position: relative;
+    padding-left:50px;
+    line-height: 2;
+    font-size:32px;
+}
+
+h2{
+    float: right;
+}
+

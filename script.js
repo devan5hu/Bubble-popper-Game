@@ -1,15 +1,14 @@
+var score = parseInt(localStorage.getItem("PausedScore") ), time = localStorage.getItem("time") != 0 ? parseInt(localStorage.getItem("time")) : 30;
 function changeValue(){
     var ObjectSelector = document.getElementById('myList');
     var value1 = ObjectSelector.options[ObjectSelector.selectedIndex].text;
     localStorage.setItem("value" , value1);
-    console.log(value1);
 }
 
 function changeDifficulty(){
     var ObjectSelector = document.getElementById('difficultyList');
     var difficultyValue = ObjectSelector.options[ObjectSelector.selectedIndex].text;
     localStorage.setItem("difficulty" , difficultyValue);
-    console.log(difficultyValue);
 }
 
 /* Shims, Polyfills, and Utils */
@@ -115,7 +114,6 @@ Particle.prototype = {
             ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2, false);
             ctx.fill();
         }
-        //this.onafterdraw && this.onafterdraw.call(this);
     }
 };
 /* Emitter */
@@ -169,10 +167,9 @@ Emitter.prototype = {
         return ret;
     }
 };
-// console.log(localStorage.getItem("value"));
+
 var value = localStorage.getItem("value");
 var difficultyValue = localStorage.getItem("difficulty");
-console.log("DIFFICULTY " + difficultyValue);
 var canvas = document.getElementById('canvas'),
     len = document.getElementById('len'),
     height = canvas.height = document.body.offsetHeight,
@@ -219,16 +216,7 @@ var canvas = document.getElementById('canvas'),
         img: broken_heart[0], // broken red
         minvalue: -10,
         maxvalue: -20,
-        rarity: 0.2,
-        time: -1
-    }, {
-        name: 'Bad Bubble 2',
-        hits: 1,
-        color: '#f00',
-        img: broken_heart[1], // broken yellow
-        minvalue: -10,
-        maxvalue: -20,
-        rarity: 0.2,
+        rarity: 0.5,
         time: -1
     }, {
         name: 'Golden Bubble',
@@ -242,14 +230,14 @@ var canvas = document.getElementById('canvas'),
     }
 
     ]
-    score = 0,
+
     scoreboard = document.getElementById('score'),
     timer = document.getElementById('timer');
     if(value == "Hearts"){
         i_bubble.src = './Hearts/heartblue.svg';
         i_bubble_power.src = './Hearts/heartred.svg';
         broken_heart[0].src = './Hearts/heartredbroken.svg'; 
-        broken_heart[1].src = './Hearts/heartyellowbroken.svg'; 
+        broken_heart[1].src = 'Hearts\heartyellowbroken.svg'; 
         i_bubble_gold.src = './Hearts/heartgolden.svg';
     }
     else if(value == "Bubbles"){
@@ -297,7 +285,7 @@ var gwind = 0;
     gwind = (difficultyValue == "Easy" ? 
     (Math.random() - 0.5) / 50 : 
     difficultyValue == "Medium" ? 
-    (Math.random() - 0.5) / 10 : 
+    (Math.random() - 0.5) / 8 : 
     (Math.random() - 0.5) / 4 );
     setTimeout(windEmitter, 200); // was 1000
 }());
@@ -315,6 +303,7 @@ setInterval(function () {
         size: Math.random() * 10 + 45,
         vx: 0,
         vy: -0.05,
+        name: type.name,
         hp: type.hits,
         time: type.time,
         img: type.img,
@@ -340,9 +329,7 @@ setInterval(function () {
             this.wind = gwind;
         }
     });
-    // console.log(type.img)
-    // console.log(type.img.src)
-}, Math.random() * 1000 + 10);
+}, difficultyValue == "Hard" ? Math.random() * 900 + 1 : Math.random() * 950 + 1 );
 
 
 
@@ -372,27 +359,37 @@ canvas.onclick = function (event) {
         emitter.create({
             x: event.clientX,
             y: event.clientY,
-            // vx: Math.cos((angle * Math.PI / 180)) * firespeed,
-            // vy: Math.sin((angle * Math.PI / 180)) * firespeed,
             vx: 0,
             vy: 0,
             color: '',
             size: 0,
             gravity: 0.001,
-            // img: i_bullet,
             onviewexit: function () {
-                // console.log('Out of bounds');
                 this.destroy = true;
             },
             oncollision: function (collision_partner) {
                 var crit = Math.random() > .7 ? 50 : 0;
                 collision_partner.hp -= 50 + crit;
+                console.log(JSON.stringify(collision_partner));
                 if (collision_partner.hp > 0) {
                     collision_partner.oncollision.call(collision_partner, this);
                 } else {
                     collision_partner.destroy = true;
                     if(event.clientX != null && event.clientY != null){
-                        score += 10;
+                        if(collision_partner.name == "Bubble"){
+                            score += 10;
+                        }
+                        else if(collision_partner.name == "Power Bubble"){
+                            time += 1.25;
+                            score += 10;
+                        }
+                        else if(collision_partner.name == "Bad Bubble"){
+                            time -= 1.25;
+                        }
+                        else if(collision_partner.name == "Golden Bubble"){
+                            time += 2;
+                            score += 20;
+                        }
                     }
                     for (var i = 0; i < 20; i++) {
                         emitter.create({
@@ -419,24 +416,52 @@ canvas.onclick = function (event) {
 function endgame() {
     alert('game over score: ' + (score | 0));
     scene.paused = true;
+    localStorage.setItem("PausedScore" , 0);
+    localStorage.setItem("time" , 30);
 }
 
-var time = 30;
 function Restartgame(){
+    localStorage.setItem("PausedScore" , 0);
+    localStorage.setItem("time" , 30);
     document.location.reload();
 }
 
 const PauseButton = document.getElementById('pause');
+const ResumeButton = document.getElementById('resume');
+ResumeButton.disabled = true;
+
+function PauseGame(){
+    scene.paused = true;
+    localStorage.setItem("PausedScore" , score);
+    localStorage.setItem("time" , time + 2);
+    PauseButton.disabled = true; 
+    ResumeButton.disabled = false;
+}
+
+function ResumeGame(){
+    document.location.reload();
+    score = localStorage.getItem("PausedScore");
+    time = localStorage.getItem("time");
+    ResumeButton.disabled = true;
+    PauseButton.disabled = false;
+}
+
+ResumeButton.addEventListener("click" , ResumeGame);
+PauseButton.addEventListener("click" , PauseGame);
 
 function level() {
     if (scene.paused == false) {
-        timer.textContent = time;
+        timer.textContent = time < 0 ? 0 : time;
         time--;
         if(time <= 9){
             timer.style.color = 'red'; 
             timer.style.fontSize = '30px';
         }
-        if (time < 0) {
+        if(time > 9){
+            timer.style.color = 'lightgreen'; 
+            timer.style.fontSize = '16px';
+        }
+        if (time === 0 || time < 0) {
             endgame();
         }
         setTimeout(level, 1000);
