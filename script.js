@@ -1,4 +1,6 @@
-var score = parseInt(localStorage.getItem("PausedScore") ), time = parseInt(localStorage.getItem("time")) != NaN ? parseInt(localStorage.getItem("time")) : 30;
+var score = parseInt(localStorage.getItem("PausedScore") ), 
+// time = parseInt(localStorage.getItem("time")) != NaN ? parseInt(localStorage.getItem("time")) : 30;
+time = 30;
 function changeValue(){
     var ObjectSelector = document.getElementById('myList');
     var value1 = ObjectSelector.options[ObjectSelector.selectedIndex].text;
@@ -417,12 +419,12 @@ function endgame() {
     alert('game over score: ' + (score | 0));
     scene.paused = true;
     localStorage.setItem("PausedScore" , 0);
-    localStorage.setItem("time" , 30);
+    // localStorage.setItem("time" , 30);
 }
 
 function Restartgame(){
     localStorage.setItem("PausedScore" , 0);
-    localStorage.setItem("time" , 30);
+    // localStorage.setItem("time" , 30);
     document.location.reload();
 }
 
@@ -433,7 +435,7 @@ ResumeButton.disabled = true;
 function PauseGame(){
     scene.paused = true;
     localStorage.setItem("PausedScore" , score);
-    localStorage.setItem("time" , time + 2);
+    // localStorage.setItem("time" , time + 2);
     PauseButton.disabled = true; 
     ResumeButton.disabled = false;
 }
@@ -441,7 +443,7 @@ function PauseGame(){
 function ResumeGame(){
     document.location.reload();
     score = localStorage.getItem("PausedScore");
-    time = localStorage.getItem("time");
+    // time = localStorage.getItem("time");
     ResumeButton.disabled = true;
     PauseButton.disabled = false;
 }
